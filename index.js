@@ -52,6 +52,9 @@ bot.on('message', (msg) => {
   // send a message to the chat acknowledging receipt of their message
   // bot.sendMessage(chatId, 'Received your message');
 
+  if(msg.text === '/heyjuni') {
+    return bot.sendMessage(chatId, 'Hmm en?');
+  }
   console.log(msg)
 });
 
@@ -59,9 +62,16 @@ bot.on('message', (msg) => {
 const openai = new OpenAI();
 
 
-// Matches "/gosha [whatever]"
-bot.onText(/\/gosha (.+)/, async (msg, match) => {
+// Matches "/juni [whatever]"
+bot.onText(/\/heyjuni (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
+
+  var input = match[1]
+
+  if(!input) {
+    return  bot.sendMessage(chatId, 'Hmm en?');
+  }
+
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
