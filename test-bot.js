@@ -10,7 +10,7 @@ const bot = new TelegramBot(token);
 
 var THINKING_WORDS = [
   'Hm....I am thinking....',
-  'Get me a second!....'
+  'Okay...Get me a second!....'
 ]
 
 // https://stackoverflow.com/questions/4550505/getting-a-random-value-from-a-javascript-array
@@ -26,3 +26,26 @@ bot.sendMessage(TEST_ID, thinking_word).then(_ =>{
   }, 1000)
 
 })
+
+
+// {
+//   message_id: 94,
+//   from: {
+//     id: 7141644633,
+//     is_bot: false,
+//     first_name: 'Гоша',
+//     last_name: 'ХХХ',
+//     username: 'zackexplosion',
+//     language_code: 'en'
+//   },
+//   chat: {
+//     id: 7141644633,
+//     first_name: 'Гоша',
+//     last_name: 'ХХХ',
+//     username: 'zackexplosion',
+//     type: 'private'
+//   },
+//   date: 1715280678,
+//   text: '/heyjuni can you translate this to Russian? ""Lena, I just want you to know that I have feelings for you and care about you deeply. I wanted to share this with you because you mean a lot to me." Good luck!"',
+//   entities: [ { offset: 0, length: 8, type: 'bot_command' } ]
+// }
