@@ -6,6 +6,8 @@ const THINKING_WORDS = [
   '🤔....'
 ]
 
+var messages = []
+
 export async function hey_juni(bot, msg, input){
   const chatId = msg.chat.id
 
@@ -20,16 +22,14 @@ export async function hey_juni(bot, msg, input){
   promises.push(
     bot.sendMessage(chatId, thinking_word)
   )
-  
+  messages.push({
+    "role": "user",
+    "content": input
+  })
   promises.push(
     openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [
-        {
-          "role": "user",
-          "content": input
-        }
-      ],
+      messages: messages,
       temperature: 1,
       max_tokens: 256,
       top_p: 1,
@@ -45,6 +45,11 @@ export async function hey_juni(bot, msg, input){
   if(response && Array.isArray(response.choices) && response.choices[0]) {
     messageToChange += `\n\n${response.choices[0].message.content}`
   }
+
+  messages.push({
+    "role": "assistant",
+    "content": messageToChange
+  })
 
   bot.editMessageText(messageToChange, {
     chat_id: message.chat.id,
