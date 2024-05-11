@@ -6,7 +6,12 @@ const THINKING_WORDS = [
   '🤔....'
 ]
 
-var messages = []
+var messages = [
+  {
+    "role": "user",
+    "content": 'If you going to response something in Chinese, please only respond in Traditional Chinese Chinese, not Simplified Chinese Chinese' 
+  }
+]
 
 export async function hey_juni(bot, msg, input){
   const chatId = msg.chat.id

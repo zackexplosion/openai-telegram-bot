@@ -43,7 +43,7 @@ bot.on('message', (msg) => {
 
 // Matches "/juni [whatever]"
 // Matches "/heyjuni [whatever]"
-bot.onText(/(\/juni|\/heyjuni) (.+)/, async (msg, match) => {
-  // console.log(match)
+bot.onText(/(\/juni|\/heyjuni) (.+)/gms, async (msg, match) => {
+  console.log(match)
   hey_juni(bot, msg, match[2])
 });
