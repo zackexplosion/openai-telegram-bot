@@ -46,9 +46,9 @@ export async function hey_juni(bot, msg, input){
   const [message, response] = await Promise.all(promises)
 
 
-  var messageToChange = thinking_word
+  var messageToChange = ''
   if(response && Array.isArray(response.choices) && response.choices[0]) {
-    messageToChange += `\n\n${response.choices[0].message.content}`
+    messageToChange = `${response.choices[0].message.content}`
   }
 
   messages.push({
@@ -56,7 +56,7 @@ export async function hey_juni(bot, msg, input){
     "content": messageToChange
   })
 
-  bot.editMessageText(messageToChange, {
+  bot.editMessageText(thinking_word + '\n\n' + messageToChange, {
     chat_id: message.chat.id,
     message_id: message.message_id,
   })
