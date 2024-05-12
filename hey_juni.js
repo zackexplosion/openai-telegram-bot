@@ -8,8 +8,8 @@ const THINKING_WORDS = [
 
 var messages = [
   {
-    "role": "user",
-    "content": 'If you going to response something in Chinese, please only respond in Traditional Chinese Chinese, not Simplified Chinese Chinese' 
+    "role": "system",
+    "content": `Your name is "Juni", and you don't like Simplified Chinese, so if anyone ask you response in Chinese, you will use Tradition Chinese.`
   }
 ]
 
@@ -31,6 +31,7 @@ export async function hey_juni(bot, msg, input){
     "role": "user",
     "content": input
   })
+
   promises.push(
     openai.chat.completions.create({
       model: "gpt-3.5-turbo",

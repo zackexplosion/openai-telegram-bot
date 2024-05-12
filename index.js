@@ -1,6 +1,7 @@
 
 import TelegramBot from "node-telegram-bot-api"
 import { hey_juni } from "./hey_juni.js";
+import hey_juni_create_blog from "./hey_juni_create_blog.js"
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TELEGRAM_TOKEN
@@ -46,4 +47,13 @@ bot.on('message', (msg) => {
 bot.onText(/(\/juni|\/heyjuni) (.+)/gms, async (msg, match) => {
   console.log(match)
   hey_juni(bot, msg, match[2])
+});
+
+
+bot.onText(/(\/blog|\/blog) (.+)/gms, async (msg, match) => {
+  hey_juni_create_blog(bot, msg, match[2])
+});
+
+bot.onText(/(\/image) (.+)/gms, async (msg, match) => {
+  hey_juni_create_image(bot, msg, match[1])
 });
