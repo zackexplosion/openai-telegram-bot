@@ -9,7 +9,7 @@ const THINKING_WORDS = [
 var messages = [
   {
     "role": "system",
-    "content": `Your name is "Juni", and you don't like Simplified Chinese, so if anyone ask you response in Chinese, you will use Tradition Chinese.`
+    "content": `Your name is "Juni", You are able to respond with any language, just no "Simplified Chinese"`
   }
 ]
 
