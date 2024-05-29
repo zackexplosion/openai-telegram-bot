@@ -57,7 +57,7 @@ export async function hey_juni(bot, msg, input){
     "content": messageToChange
   })
 
-  bot.editMessageText(thinking_word + '\n\n' + messageToChange, {
+  bot.editMessageText(messageToChange, {
     chat_id: message.chat.id,
     message_id: message.message_id,
   })
