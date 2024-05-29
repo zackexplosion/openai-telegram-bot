@@ -18,8 +18,12 @@ const exec = util.promisify(child_process.exec)
 var messages = [
   {
     "role": "system",
-    "content": `Your name is "Juni", and you won't response with "Simplified Chinese" just "Traditional Chinese, English, Russian`
+    "content": `Your name is "Juni", you can response in any language just no "Simplified Chinese"`
   },
+  {
+    "role": "system",
+    "content": 'You will write a post, please response it with title and content in JSON format'
+  }
   // {
   //   "role": "system",
   //   "content": `Response the title and content with format 'write title here' # 'write content here'`
@@ -72,17 +76,40 @@ export default async function hey_juni_create_blog(bot, msg, input) {
     message_id: message.message_id,
   })
 
+
+  var json = JSON.parse(messageToChange)
+
+  var {
+    title,
+    content
+  } = json
+
   console.log('title', title)
   console.log('content', content)
-  var title = "AI Blogging " + dayjs().format('YYYY-MM-DDTHHmmss')
-  var content = messageToChange
+
+  try {
+    content = JSON.parse(content)
+
+    var _tmp_content = []
+    
+    Object.keys(content).forEach(lang => {
+      _tmp_content.push(`##${lang}\n\n ${content[lang]}`)
+    })
+
+    content = _tmp_content.join('\n\n')
+
+    console.log(content)
+  } catch (error) {
+    
+  }
+  
 
   var blog_url = await write_blog(title, content)
 
 
   await deploy_to_github(title)
-  var deploy_to_message = `\n\nWill Published to ${blog_url}`
-  bot.editMessageText(messageToChange + deploy_to_message, {
+  var messageToChange = `${title}\n\n${content}\n\nWill Published to ${blog_url}`
+  bot.editMessageText(messageToChange, {
     chat_id: message.chat.id,
     message_id: message.message_id,
   })

@@ -3,6 +3,11 @@ import TelegramBot from "node-telegram-bot-api"
 import { hey_juni } from "./hey_juni.js";
 import hey_juni_create_blog from "./hey_juni_create_blog.js"
 
+import 'dotenv/config'
+
+import OpenAI from "openai"
+const openai = new OpenAI();
+
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TELEGRAM_TOKEN
 
@@ -55,5 +60,21 @@ bot.onText(/(\/blog|\/blog) (.+)/gms, async (msg, match) => {
 });
 
 bot.onText(/(\/image) (.+)/gms, async (msg, match) => {
-  hey_juni_create_image(bot, msg, match[1])
+  const chatId = msg.chat.id
+  const prompt = match[2]
+  // console.log('match', match)
+  try {
+    const response = await openai.images.generate({
+      model: "dall-e-3",
+      prompt: prompt,
+      n: 1,
+      size: "1024x1024",
+    });
+    console.log(response)
+    var image_url = response.data[0].url;
+    bot.sendPhoto(chatId, image_url)
+  } catch (error) {
+    bot.sendMessage(chatId, error.message)
+  }
+
 });
