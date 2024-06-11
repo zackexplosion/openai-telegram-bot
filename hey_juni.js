@@ -36,29 +36,71 @@ export async function hey_juni(bot, msg, input){
     openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: messages,
-      temperature: 1,
-      max_tokens: 256,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
+      // temperature: 1,
+      // max_tokens: 256,
+      // top_p: 1,
+      // frequency_penalty: 0,
+      // presence_penalty: 0,
+      stream: true
     })
   )
 
-  const [message, response] = await Promise.all(promises)
+  const [message, stream] = await Promise.all(promises)
 
 
   var messageToChange = ''
-  if(response && Array.isArray(response.choices) && response.choices[0]) {
-    messageToChange = `${response.choices[0].message.content}`
+  var finished = false
+
+  var interval = setInterval(() => {
+
+    if(finished) return
+
+    bot.editMessageText(messageToChange, {
+      chat_id: message.chat.id,
+      message_id: message.message_id,
+    })
+  }, 500)
+
+  for await (const chunk of stream) {
+    if(chunk.choices &&
+      chunk.choices[0] &&
+      chunk.choices[0].delta &&
+      chunk.choices[0].delta.content
+    ) {
+      messageToChange += chunk.choices[0].delta.content
+      console.log(messageToChange)
+    }
+
+    if(chunk.choices && chunk.choices.finish_reason === 'stop') {
+      finished = true
+    }
   }
 
-  messages.push({
-    "role": "assistant",
-    "content": messageToChange
-  })
+  clearInterval(interval)
+
+  console.log('messageToChange final', messageToChange)
 
   bot.editMessageText(messageToChange, {
     chat_id: message.chat.id,
     message_id: message.message_id,
   })
+
+
+
+
+
+
+  // if(response && Array.isArray(response.choices) && response.choices[0]) {
+  //   messageToChange = `${response.choices[0].message.content}`
+  // }
+
+  // messages.push({
+  //   "role": "assistant",
+  //   "content": messageToChange
+  // })
+
+  // bot.editMessageText(messageToChange, {
+  //   chat_id: message.chat.id,
+  //   message_id: message.message_id,
+  // })
 }
